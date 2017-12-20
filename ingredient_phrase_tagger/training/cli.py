@@ -1,7 +1,7 @@
+import csv
 import re
 import decimal
 import optparse
-import pandas as pd
 
 import utils
 
@@ -19,15 +19,18 @@ class Cli(object):
         Generates training data in the CRF++ format for the ingredient
         tagging task
         """
-        df = pd.read_csv(self.opts.data_path)
-        df = df.fillna("")
+        data = []
+        with open(self.opts.data_path, "r") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for line in reader:
+                data.append(line)
 
         start = int(offset)
         end = int(offset) + int(count)
 
-        df_slice = df.iloc[start: end]
+        data_slice = data[start:end]
 
-        for index, row in df_slice.iterrows():
+        for row in data_slice:
             try:
                 # extract the display name
                 display_input = utils.cleanUnicodeFractions(row["input"])

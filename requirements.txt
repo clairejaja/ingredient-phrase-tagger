@@ -1,2 +1,1 @@
 Unidecode==0.04.14
-pandas==0.17.1
